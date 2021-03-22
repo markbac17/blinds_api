@@ -13,7 +13,6 @@
 * More info on the protocol in Markisol.ino and RemoteCapture.ino here:
 * https://github.com/akirjavainen/markisol
 *
-* Adapted by: Antoine Mercadal
 """
 
 import time
@@ -25,16 +24,21 @@ USAGE = """
  Usage:
     %s [command]
 
-    commands: 'pair', 'up', 'down', 'stop', 'change', 'limit'.
+    commands: 'pair', 'change', 'limit' 'tango-up', 'tango-down', 'tango-stop', 'whiskey-up', 'whiskey-down', 'whiskey-stop',.
 """
 
 # Control Commands
-SHADE_PAIR = "10111011111011111000001010000011110101001"  # C button
-SHADE_DOWN = "10111011111011111000100010000011110110101"  # DOWN button
-SHADE_STOP = "10111011111011111000101010000011110110001"  # STOP button
-SHADE_UP = "10111011111011111000001110000011110101011"  # UP button
+
+TANGO_DOWN = "10011110111111011000001110000011111000101"  # DOWN button
+TANGO_STOP = "10011110111111011000101010000011111011011"  # STOP button
+TANGO_UP = "10011110111111011000100010000011111011111"  # UP button
+WHISKEY_DOWN = "10111011111011111000100010000011110110101"  # DOWN button
+WHISKEY_STOP = "01010110000111111000101010000011101100011"  # STOP button
+WHISKEY_UP = "01010110000111111000100010000011101100111"  # UP button
+
 SHADE_LIMIT = "10111011111011111000010010000011110100101"  # L button
 SHADE_CHANGE_DIRECTION = "10111011111011111000000110000011110101111"  # STOP + L buttons
+SHADE_PAIR = "10111011111011111000001010000011110101001"  # C button
 
 TRANSMIT_PIN = 11  # BCM PIN 11 (GPIO17, BOARD PIN 11)
 REPEAT_COMMAND = 10
@@ -113,12 +117,18 @@ def _transmitLow(delay):
 
 
 def _convertCmd(cmd_string):
-    if cmd_string.lower() == "up":
-        return SHADE_UP
-    elif cmd_string.lower() == "down":
-        return SHADE_DOWN
-    elif cmd_string.lower() == "stop":
-        return SHADE_STOP
+    if cmd_string.lower() == "tango-up":
+        return TANGO_UP
+    elif cmd_string.lower() == "tango-down":
+        return TANGO_DOWN
+    elif cmd_string.lower() == "tango-stop":
+        return TANGO_STOP
+    elif cmd_string.lower() == "whiskey-up":
+        return WHISKEY_UP
+    elif cmd_string.lower() == "whiskey-down":
+        return WHISKEUY_DOWN
+    elif cmd_string.lower() == "tango-stop":
+        return WHISKEY_STOP
     elif cmd_string.lower() == "limit":
         return SHADE_LIMIT
     elif cmd_string.lower() == "change":
@@ -127,7 +137,6 @@ def _convertCmd(cmd_string):
         return SHADE_PAIR
     else:
         raise Exception("Unknown command '%s'" % cmd_string)
-
 
 # ------------------------------------------------------------------
 # Main program:
