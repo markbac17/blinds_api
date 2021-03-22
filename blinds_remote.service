@@ -1,0 +1,13 @@
+[Unit]
+Description=API Controlled Remote
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/root/markisol/remote-api
+ExecStart=/root/markisol/start-server.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
